@@ -3,8 +3,6 @@ Replay interpolator is a tool to render multiple [Replay Mod](https://www.replay
 time coherence between files.
 
 ## How to use it:
-YouTube video explaining the problem it aims to solve and how to use it soon™
-
 - Record your replays
 - The camera path you want in the first replay (REMEMBER HOW LONG IT IS, YOU WILL NEED IT LATER)
 - First, set up a folder in which you will be working
