@@ -56,6 +56,8 @@ public class ReplayInterpolator{
             System.out.println(e.getMessage());
         }
         long timePassedS = 0;
+        double previousout = 0;
+        FileWriter textWriter = new FileWriter("out.txt");
         for(File replay : replays){
             if(new File(replay.getPath()+"/timelines.json").delete()&& !(replay.getName().equals(first.getName())))System.out.println("Replay "+replay.getName()+" had keyframes and had been deleted");
             JSONObject timeTimeline = new JSONObject();
@@ -63,6 +65,10 @@ public class ReplayInterpolator{
             long replayDurationS = durationsMap.get(replay.getName());
             double equivalentSeconds = ((float)replayDurationS/(float)summedReplayDurations)*(float)desiredFinalDuration;
             long[][] data = {{timePassedS,1000},{(long) (timePassedS+equivalentSeconds), replayDurationS+1000}};
+            if(!replay.getName().equals(first.getName()))textWriter.write("outpoint "+previousout/1000L+"\n");
+            textWriter.write("file "+getNameWithoutExtension(replay.getName())+".mp4\n");
+            if(!replay.getName().equals(first.getName()))textWriter.write("inpoint "+((double)timePassedS/1000L)+"\n");
+            previousout = timePassedS+equivalentSeconds;
             timePassedS += (long) equivalentSeconds;
             for(long[] l : data)content.add(getKeyframeJson(l[0],l[1]));
             JSONArray array = new JSONArray();
@@ -78,7 +84,7 @@ public class ReplayInterpolator{
             array.add(cameraTimeline);
             JSONObject timelines = new JSONObject();
             timelines.put("",array);
-            System.out.println(timelines.toJSONString());
+            //System.out.println(timelines.toJSONString());
             FileWriter writer = new FileWriter(replay.getPath()+"/timelines.json");
             writer.write(timelines.toJSONString());
             writer.close();
@@ -86,6 +92,15 @@ public class ReplayInterpolator{
             deleteDirectory(replay);
             File finalReplay = new File("replays/"+replay.getName()+".zip");
             finalReplay.renameTo(replay);
+        }
+        textWriter.close();
+    }
+    public static String getNameWithoutExtension(String name) {
+        int lastIndex = name.lastIndexOf(".");
+        if (lastIndex != -1) {
+            return name.substring(0, lastIndex);
+        } else {
+            return name;
         }
     }
     static JSONObject getKeyframeJson(long time,long timestamp){
