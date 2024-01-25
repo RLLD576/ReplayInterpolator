@@ -5,7 +5,7 @@ time coherence between files.
 
 ## How to use it:
 - Record your replays
-- The camera path you want in the first replay (REMEMBER HOW LONG IT IS, YOU WILL NEED IT LATER)
+- The camera path you want in the first replay **remember how long it is, you will need it later**
 - First, set up a folder in which you will be working
 - Inside that folder, put the latest ReplayInterpolator.jar release and a folder called `replays`
 - Put all the replays you want in the `replays` folder (The replays order of the final time-lapse
